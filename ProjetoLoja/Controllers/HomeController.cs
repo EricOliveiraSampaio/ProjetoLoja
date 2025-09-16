@@ -1,27 +1,27 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ProjetoLoja.Models;
-using System.Diagnostics;
+using ProjetoLoja.Repository;
 
-namespace ProjetoLoja.Controllers
+namespace ProjetoBrinquedos.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ProdutoRepository _produtoRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ProdutoRepository produtoRepositorio)
         {
             _logger = logger;
+            _produtoRepository = produtoRepositorio;
         }
-
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
+            var produtos = await _produtoRepository.TodosProdutos();
+            return View(produtos);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
